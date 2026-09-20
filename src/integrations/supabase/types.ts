@@ -14,7 +14,65 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      device_verifications: {
+        Row: {
+          access_until: string | null
+          device_id: string
+          server_id: string | null
+          started_at: string | null
+          status: string
+          updated_at: string
+          verified_at: string | null
+        }
+        Insert: {
+          access_until?: string | null
+          device_id: string
+          server_id?: string | null
+          started_at?: string | null
+          status: string
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Update: {
+          access_until?: string | null
+          device_id?: string
+          server_id?: string | null
+          started_at?: string | null
+          status?: string
+          updated_at?: string
+          verified_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "device_verifications_server_id_fkey"
+            columns: ["server_id"]
+            isOneToOne: false
+            referencedRelation: "servers"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      servers: {
+        Row: {
+          created_at: string
+          id: string
+          name: string
+          shortener_link: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          name: string
+          shortener_link: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          name?: string
+          shortener_link?: string
+        }
+        Relationships: []
+      }
     }
     Views: {
       [_ in never]: never
