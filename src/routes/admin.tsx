@@ -220,7 +220,7 @@ function Admin() {
             onSubmit={(e) => {
               e.preventDefault();
               saveMutation.mutate({
-                id: editing.id,
+                ...(editing.id ? { id: editing.id } : {}),
                 name: editing.name,
                 shortenerLink: editing.link,
               });

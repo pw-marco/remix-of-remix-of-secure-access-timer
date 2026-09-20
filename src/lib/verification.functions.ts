@@ -2,8 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import {
   getAccessState,
-  startVerification,
-  completeVerification,
+  startVerification as startVerificationImpl,
+  completeVerification as completeVerificationImpl,
   listPublicServers,
   adminList,
   adminSave,
@@ -29,13 +29,14 @@ export const startVerification = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    return startVerification(data.deviceId, data.serverId);
+    await startVerificationImpl(data.deviceId, data.serverId);
+    return { ok: true as const };
   });
 
 export const completeVerification = createServerFn({ method: "POST" })
   .inputValidator((data) => deviceIdSchema.parse(data))
   .handler(async ({ data }) => {
-    return completeVerification(data.deviceId);
+    return completeVerificationImpl(data.deviceId);
   });
 
 export const adminListServers = createServerFn({ method: "POST" })
@@ -57,7 +58,7 @@ export const adminSaveServer = createServerFn({ method: "POST" })
   )
   .handler(async ({ data }) => {
     await adminSave(data.passcode, {
-      id: data.id,
+      ...(data.id ? { id: data.id } : {}),
       name: data.name,
       shortenerLink: data.shortenerLink,
     });
