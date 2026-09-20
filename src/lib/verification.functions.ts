@@ -29,8 +29,7 @@ export const startVerification = createServerFn({ method: "POST" })
       .parse(data),
   )
   .handler(async ({ data }) => {
-    await startVerificationImpl(data.deviceId, data.serverId);
-    return { ok: true as const };
+    return startVerificationImpl(data.deviceId, data.serverId);
   });
 
 export const completeVerification = createServerFn({ method: "POST" })
